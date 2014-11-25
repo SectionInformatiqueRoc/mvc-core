@@ -23,5 +23,21 @@ class Date extends \DateTime{
         $d=new Date(date('Y-m-t 00:00:00',$this->getTimestamp()));
         return $d->getTimestamp();
     }
+    /**
+     * Create a Date from US date
+     * @param String $date
+     * @return \MVC\Date
+     */
+    static function fromUS($date){
+        $date=self::createFromFormat('Y-m-d', $date);
+        return $date;
+    }
+    /**
+     * 
+     * @return String date au format d/m/y
+     */
+    function toFr(){
+        return $this->format('d/m/y');
+    }
     
 }
