@@ -48,20 +48,21 @@ class TableRow {
         $values = array_values($attributs);
 
         if (isset($this->id) and is_numeric($this->id)) {
-            $query = 'update `' . $table . '` set ';
-            $query.=implode('=?,', array_keys($attributs)) . '=?';
+            $query = 'update `' . $table . '` set `';
+            $query.=implode('`=?,', array_keys($attributs)) . '`=?';
             $query.=' where id=?';
             $values[] = $this->id;
         } else {
             $query = 'insert into `'
                     . $table
-                    . '`(' . implode(',', array_keys($attributs)) . ') values ('
+                    . '`(`' . implode('`,`', array_keys($attributs)) . '`) values ('
                     . substr(str_repeat('?,', sizeof($attributs)), 0, -1) . ')';
         }
 
         $queryPrepare = Connexion::prepare($query);
         if (!$queryPrepare->execute($values)) {
             $error = $queryPrepare->errorInfo();
+            var_dump($query);
             throw new \Exception("\nQuery:".Connexion::$last_query."\nPDO::errorInfo():\n" . $error[2]);
         }
         if (!is_numeric($this->id)) {
