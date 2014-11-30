@@ -35,9 +35,9 @@ class Form {
      * @param String $action attribute action of the form
      * @param String $method attribute method of the form
      */
-    public function __construct($name=null, $action = 'index.php', $method = "POST") {
-        if(is_null($name)){
-            $name=  uniqid();
+    public function __construct($name = null, $action = 'index.php', $method = "POST") {
+        if (is_null($name)) {
+            $name = uniqid();
         }
         $this->_elements = array();
         $this->_hiddens = array();
@@ -305,32 +305,39 @@ class Form {
         return $html;
     }
 
-    /**
-     * static method to display attributs
-     * @param array $attr
-     * @return string 
-     */
-    public static function attrToHTML($attr) {
-        $html = '';
-        foreach ($attr as $key => $value) {
-            if (substr($key, 0, 1) != '_') {
-                $html.=' ' . $key . '="' . htmlentities($value) . '"';
-                //$html.=' ' . $key . '="' . $value . '"';
-            }
-        }
+    public function tableAjax($attributs = array()) {
+        $this->noButtons();
+        $html=$this->table();
+        $html.='<button class="btn btn-default" onclick="submitForm($(this).parent().find(\'form:first\'))">Valider</button>';
         return $html;
     }
 
-    public function populate($objet) {
-        foreach ($this->_elements as $element) {
-            $name = $element->getName();
-            if (substr($name, -6) == '_label') {
-                $name = substr($name, 0, -6);
-            }
-            if (!isset($element->value)) {
-                $element->value = $objet->$name;
-            }
-        }
-    }
+/**
+* static method to display attributs
+* @param array $attr
+* @return string 
+*/
+public static function attrToHTML($attr) {
+$html = '';
+foreach ($attr as $key => $value) {
+if (substr($key, 0, 1) != '_') {
+$html.=' ' . $key . '="' . htmlentities($value) . '"';
+//$html.=' ' . $key . '="' . $value . '"';
+}
+}
+return $html;
+}
+
+public function populate($objet) {
+foreach ($this->_elements as $element) {
+$name = $element->getName();
+if (substr($name, -6) == '_label') {
+$name = substr($name, 0, -6);
+}
+if (!isset($element->value)) {
+$element->value = $objet->$name;
+}
+}
+}
 
 }
