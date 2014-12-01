@@ -7,7 +7,7 @@ class Message {
     static $messages = array('error' => array(), 'success' => array(), 'info' => array(), 'block' => array());
 
     static function display() {
-                if (sizeof(self::$messages['error']) + sizeof(self::$messages['success']) + sizeof(self::$messages['info']) + sizeof(self::$messages['block']) > 0) {
+        if (sizeof(self::$messages['error']) + sizeof(self::$messages['success']) + sizeof(self::$messages['info']) + sizeof(self::$messages['block']) > 0) {
             $html = '<div class="row">';
             foreach (self::$messages as $type => $messages) {
                 foreach ($messages as $m) {
