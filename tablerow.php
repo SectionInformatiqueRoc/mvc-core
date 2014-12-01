@@ -49,7 +49,7 @@ class TableRow {
 
         if (isset($this->id) and is_numeric($this->id)) {
             $query = 'update `' . $table . '` set `';
-            $query.=implode('`=?,', array_keys($attributs)) . '`=?';
+            $query.=implode('`=?,`', array_keys($attributs)) . '`=?';
             $query.=' where id=?';
             $values[] = $this->id;
         } else {
