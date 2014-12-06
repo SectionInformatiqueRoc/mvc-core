@@ -158,6 +158,12 @@ class Form {
         return $this->addInput($name, $attributs, $label, $tooltip);
     }
 
+    public function addColor($name, $attributs = array(), $label = '', $tooltip = null) {
+        $attributs['name'] = $name;
+        $attributs['type'] = 'color';
+        return $this->addInput($name, $attributs, $label, $tooltip);
+    }
+
     /**
      * Add a password input to the form
      * @param String $name
@@ -226,7 +232,6 @@ class Form {
         $attributs['type'] = 'reset';
         return $this->addInput('_reset', $attributs);
     }
-
     /**
      * getter
      * @param String $name
@@ -307,37 +312,37 @@ class Form {
 
     public function tableAjax($attributs = array()) {
         $this->noButtons();
-        $html=$this->table();
+        $html = $this->table();
         $html.='<button class="btn btn-default" onclick="submitForm($(this).parent().find(\'form:first\'))">Valider</button>';
         return $html;
     }
 
-/**
-* static method to display attributs
-* @param array $attr
-* @return string 
-*/
-public static function attrToHTML($attr) {
-$html = '';
-foreach ($attr as $key => $value) {
-if (substr($key, 0, 1) != '_') {
-$html.=' ' . $key . '="' . htmlentities($value) . '"';
+    /**
+     * static method to display attributs
+     * @param array $attr
+     * @return string 
+     */
+    public static function attrToHTML($attr) {
+        $html = '';
+        foreach ($attr as $key => $value) {
+            if (substr($key, 0, 1) != '_') {
+                $html.=' ' . $key . '="' . htmlentities($value) . '"';
 //$html.=' ' . $key . '="' . $value . '"';
-}
-}
-return $html;
-}
+            }
+        }
+        return $html;
+    }
 
-public function populate($objet) {
-foreach ($this->_elements as $element) {
-$name = $element->getName();
-if (substr($name, -6) == '_label') {
-$name = substr($name, 0, -6);
-}
-if (!isset($element->value)) {
-$element->value = $objet->$name;
-}
-}
-}
+    public function populate($objet) {
+        foreach ($this->_elements as $element) {
+            $name = $element->getName();
+            if (substr($name, -6) == '_label') {
+                $name = substr($name, 0, -6);
+            }
+            if (!isset($element->value)) {
+                $element->value = $objet->$name;
+            }
+        }
+    }
 
 }
