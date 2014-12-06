@@ -61,7 +61,7 @@ abstract class Table {
     function getAll($order = null) {
         $query = 'select * from `' . $this->_table . '`';
         if (!is_null($order)) {
-            $query.=' order by `' . $order . '`';
+            $query.=' order by `' .implode('`,`',explode(',', $order )). '`';
         }
         $rows = $this->pdo()->query($query)->fetchAll(
                 \PDO::FETCH_CLASS, $this->_tableRow
