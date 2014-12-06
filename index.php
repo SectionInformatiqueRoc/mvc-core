@@ -1,5 +1,6 @@
 <?php
-$deb=  microtime();
+
+$deb = microtime();
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -19,7 +20,20 @@ function __autoload($class) {
     if (file_exists($fichier)) {
         include $fichier;
     } else {
-        throw new Exception('file not exist : '.$fichier, E_USER_ERROR);
+        if ($chemins[0] . '\\' . $chemins[1] == 'appli\m') {
+            if (substr($chemins[2], -3) == 'row') {
+                $code = 'namespace APPLI\M;class ' . ucfirst($chemins[2]) . 'Row extends \MVC\TableRow{};';
+            } else {
+                $code = 'namespace APPLI\M;class ' . ucfirst($chemins[2]) . ' extends \MVC\Table{
+                        protected $_table=\'' . $chemins[2] . '\';
+                        protected $_tableRow=\'\\APPLI\M\\' . ucfirst($chemins[2]) . 'Row\';
+                    };';
+            }
+            var_dump($code);
+            eval($code);
+        } else {
+            throw new Exception('file not exist : ' . $fichier, E_USER_ERROR);
+        }
     }
 }
 
@@ -36,7 +50,7 @@ if (!$controleurNom::acl($a, \MVC\A::getParams())) {
 //    $c = 'Error';
 //    $controleurNom = '\APPLI\\C\\Error';
 //    $a = 'notAllowed';
-    mail('info@test.fr', 'Accès non autorisé', 'c='.$c.PHP_EOL.'a='.$a);
+    mail('info@test.fr', 'Accès non autorisé', 'c=' . $c . PHP_EOL . 'a=' . $a);
     exit('Unauthorized access');
 }
 \MVC\Controleur::setVue(new \MVC\Vue($c, $a));
@@ -51,7 +65,7 @@ if (!is_null(\MVC\A::post('return_c'))) {
 //        $c = 'Error';
 //        $controleurNom = '\APPLI\\C\\Error';
 //        $a = 'notAllowed';
-        throw new Exception('Accès non autorisé : '.$c.'::'.$a);
+        throw new Exception('Accès non autorisé : ' . $c . '::' . $a);
     }
 
     \MVC\Controleur::setVue(new \MVC\Vue($c, $a));
